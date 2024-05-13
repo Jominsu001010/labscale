@@ -29,4 +29,16 @@ public class Post {
     @Column(nullable = false)
     private Date creDate;
 
+    @Column
+    private String imgUrl;
+
+    @Builder
+    public Post(String title, String content, String state, int price, Date creDate, String imgUrl){
+        this.title = title;
+        this.content = content;
+        this.state = state;
+        this.price = price;
+        this.creDate = creDate;
+        this.imgUrl = imgUrl;
+    }
 }

@@ -1,6 +1,7 @@
 package com.example.labprj.post.service;
 
 import com.example.labprj.post.ApiResponse;
+import com.example.labprj.post.dto.PostSavedto;
 import com.example.labprj.post.entity.Post;
 import com.example.labprj.post.postRepository.PostRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -12,11 +13,11 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Service
-@Transactional(readOnly = true)
+
 public class PostService {
     @Autowired
     private PostRepository postRepository;
-
+    @Transactional(readOnly = true)
     public String getAllPost() {
         List<Post> postList = postRepository.findAll();
 
@@ -30,6 +31,22 @@ public class PostService {
         response.setResData(postList);
 
         // ObjectMapper를 사용하여 ApiResponse를 JSON 문자열로 변환
+        ObjectMapper objectMapper = new ObjectMapper();
+        try {
+            return objectMapper.writeValueAsString(response);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+            // 예외 처리
+            return "{}";
+        }
+    }
+    public String savePost(final PostSavedto params){
+            postRepository.save(params.toEntity());
+            ApiResponse<List<Post>> response = new ApiResponse<>();
+            response.setApiSvcId("CM02");
+            response.setResultCode("200");
+            response.setResultMessage("성공적으로 저장되었습니다");
+
         ObjectMapper objectMapper = new ObjectMapper();
         try {
             return objectMapper.writeValueAsString(response);

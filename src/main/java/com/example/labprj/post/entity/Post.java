@@ -8,6 +8,7 @@ import java.util.Date;
 @Entity
 @Getter
 @Setter
+@NoArgsConstructor
 @Table(name = "post")
 public class Post {
     @Id
@@ -41,4 +42,5 @@ public class Post {
         this.creDate = creDate;
         this.imgUrl = imgUrl;
     }
+
 }

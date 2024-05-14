@@ -1,6 +1,7 @@
 package com.example.labprj.post.controller;
 
 import com.example.labprj.post.dto.PostSavedto;
+import com.example.labprj.post.dto.PostUpdatedto;
 import com.example.labprj.post.entity.Post;
 import com.example.labprj.post.postRepository.PostRepository;
 import com.example.labprj.post.service.PostService;
@@ -24,4 +25,9 @@ public class PostController {
     public ResponseEntity<String> savePost(@RequestBody final PostSavedto params){
         return  new ResponseEntity<>(postService.savePost(params), HttpStatus.OK);
     }
+    @PutMapping("posting/edit/{id}")
+    public ResponseEntity<String> updatePost(@PathVariable Long id, @RequestBody final PostUpdatedto params){
+        return new ResponseEntity<>(postService.updatePost(id, params), HttpStatus.OK);
+    }
+
 }

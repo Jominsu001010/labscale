@@ -12,22 +12,28 @@ import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/")
+@RequestMapping("/posts")
 public class PostController {
     private final PostService postService;
-    @GetMapping("homelistdatas")
+    @GetMapping
     public ResponseEntity<String> getList(){
-
         return new ResponseEntity<>(postService.getAllPost(), HttpStatus.OK);
     }
 
-    @PostMapping("posting")
+    @PostMapping("/create")
     public ResponseEntity<String> savePost(@RequestBody final PostSavedto params){
         return  new ResponseEntity<>(postService.savePost(params), HttpStatus.OK);
     }
-    @PutMapping("posting/edit/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<String> updatePost(@PathVariable Long id, @RequestBody final PostUpdatedto params){
         return new ResponseEntity<>(postService.updatePost(id, params), HttpStatus.OK);
     }
-
+    @GetMapping("/{id}")
+    public ResponseEntity<String> detailPost(@PathVariable Long id){
+        return new ResponseEntity<>(postService.detailPost(id), HttpStatus.OK);
+    }
+    @DeleteMapping ("/{id}")
+    public ResponseEntity<String> deletePost(@PathVariable Long id){
+        return new ResponseEntity<>(postService.deletePost(id), HttpStatus.OK);
+    }
 }

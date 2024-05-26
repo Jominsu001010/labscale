@@ -8,8 +8,6 @@ import java.util.Date;
 @Getter
 @NoArgsConstructor
 public class PostSavedto {
-
-
     private String title;
     private String content;
     private String state;

@@ -1,9 +1,6 @@
 package com.example.labprj.user.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -37,4 +34,14 @@ public class User {
 
     @Column
     private String proFileImg;
+
+    @Enumerated(EnumType.STRING)
+    private Authority authority;
+
+    public User(String email, String password, Authority authority) {
+        this.email = email;
+        this.password = password;
+        this.authority = authority;
+    }
+
 }

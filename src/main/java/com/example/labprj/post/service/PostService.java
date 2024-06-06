@@ -1,70 +1,38 @@
 package com.example.labprj.post.service;
 
-import com.example.labprj.global.exceotion.PostNotFoundException;
-import com.example.labprj.post.ApiResponse;
-import com.example.labprj.post.dto.PostSavedto;
-import com.example.labprj.post.dto.PostUpdatedto;
+import com.example.labprj.post.dto.request.PostRequest;
+import com.example.labprj.post.dto.response.PostResponse;
 import com.example.labprj.post.entity.Post;
 import com.example.labprj.post.postRepository.PostRepository;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class PostService {
     @Autowired
     private PostRepository postRepository;
 
-    @Autowired
-    private ObjectMapper objectMapper;
-
     @Transactional(readOnly = true)
-    public String getAllPost() {
+    public PostResponse getAllPost() {
         List<Post> postList = postRepository.findAll();
 
-        // ApiResponse 객체 생성
-        ApiResponse<List<Post>> response = new ApiResponse<>();
-        response.setApiSvcId("CM01");
-        response.setResultCode("200");
-        response.setResultMessage("성공적으로 호출되었습니다");
-
-        // Post 객체 리스트를 ApiResponse의 resData에 설정
-        response.setResData(postList);
-
-        // ObjectMapper를 사용하여 ApiResponse를 JSON 문자열로 변환
-        ObjectMapper objectMapper = new ObjectMapper();
-        try {
-            return objectMapper.writeValueAsString(response);
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-            // 예외 처리
-            return "{}";
-        }
+        return PostResponse.res("CM01", HttpStatus.OK, "성공적으로 호출되었습니다.", postList);
     }
 
-    public String savePost(final PostSavedto params) {
-        postRepository.save(params.toEntity());
-        ApiResponse<List<Post>> response = new ApiResponse<>();
-        response.setApiSvcId("CM02");
-        response.setResultCode("200");
-        response.setResultMessage("성공적으로 저장되었습니다");
+    public PostResponse savePost(final PostRequest params) {
+        Post savepost = postRepository.save(params.toEntity());
 
-        ObjectMapper objectMapper = new ObjectMapper();
-        try {
-            return objectMapper.writeValueAsString(response);
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-            // 예외 처리
-            return "{}";
-        }
+        return PostResponse.res("CM01",
+                HttpStatus.OK,
+                "성공적으로 저장되었습니다.");
     }
 
-    public String detailPost(Long id) {
+/*    public String detailPost(Long id) {
         Optional<Post> optionalPost = postRepository.findById(id);
         ApiResponse<Post> response = new ApiResponse<>();
 
@@ -73,7 +41,6 @@ public class PostService {
             response.setApiSvcId("CM01");
             response.setResultCode("200");
             response.setResultMessage("성공적으로 호출되었습니다.");
-            response.setData(post);  // Post 객체를 직접 설정합니다.
         } else {
             response.setApiSvcId("CM02");
             response.setResultCode("404");
@@ -86,10 +53,10 @@ public class PostService {
             e.printStackTrace();
             return "{}";
         }
-    }
+    }*/
 
 
-    public String updatePost(Long id, final PostUpdatedto params) {
+/*    public String updatePost(Long id, final PostUpdatedto params) {
         Post existingPost = postRepository.findById(id)
                 .orElseThrow(() -> new PostNotFoundException("해당 id에 해당하는 게시글을 찾을 수 없습니다. id: " + id));
 
@@ -108,13 +75,13 @@ public class PostService {
         response.setResultMessage("성공적으로 업데이트되었습니다.");
 
         return convertToJson(response);
-    }
+    }*/
 
 
 
 
 
-    public String deletePost(Long id) {
+   /* public String deletePost(Long id) {
         Post post = postRepository.findById(id)
                 .orElseThrow(() -> new PostNotFoundException("해당 id에 해당하는 게시글을 찾을 수 없습니다. id: " + id));
 
@@ -126,14 +93,6 @@ public class PostService {
         response.setResultMessage("성공적으로 삭제되었습니다.");
 
         return convertToJson(response);
-    }
+    }*/
 
-    private String convertToJson(ApiResponse<String> response) {
-        try {
-            return objectMapper.writeValueAsString(response);
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-            return "{}";
-        }
-    }
 }

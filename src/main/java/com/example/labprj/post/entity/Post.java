@@ -33,8 +33,7 @@ public class Post {
     @Column
     private String imgUrl;
 
-    @Builder
-    public Post(String title, String content, String state, int price, Date creDate, String imgUrl){
+    public Post(String title, String content, String state, int price, Date creDate, String imgUrl) {
         this.title = title;
         this.content = content;
         this.state = state;
@@ -42,5 +41,4 @@ public class Post {
         this.creDate = creDate;
         this.imgUrl = imgUrl;
     }
-
 }
